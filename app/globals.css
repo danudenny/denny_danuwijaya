@@ -300,3 +300,30 @@ h1, h2, h3 {
   margin: 0 auto;
   padding: 2rem;
 }
+
+@keyframes scanline {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes textScanline {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+  }
+  50% {
+    opacity: 0.95;
+    text-shadow: 0 0 2px rgba(0, 255, 0, 0.4);
+  }
+}
+
+.animate-textScanline {
+  animation: textScanline 4s ease-in-out infinite;
+}

@@ -3,19 +3,300 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: monospace;
+  padding: 2rem;
+}
+
+/* Brutalist styles */
+.brutal-box {
+  background-color: white;
+  border: 3px solid black;
+  padding: 2.5rem;
+  position: relative;
+  color: black;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.brutal-box:hover {
+  background-color: black;
+  transform: scale(1.01);
+}
+
+.brutal-box:hover * {
+  color: white !important;
+}
+
+/* Blue variant */
+.brutal-box-blue {
+  border-color: #0066cc;
+  color: #0066cc;
+}
+
+.brutal-box-blue:hover {
+  background-color: #0066cc;
+}
+
+.brutal-box-blue:hover * {
+  color: white !important;
+}
+
+/* Red variant */
+.brutal-box-red {
+  border-color: #cc0000;
+  color: #cc0000;
+}
+
+.brutal-box-red:hover {
+  background-color: #cc0000;
+}
+
+.brutal-box-red:hover * {
+  color: white !important;
+}
+
+/* Green variant */
+.brutal-box-green {
+  border-color: #00cc66;
+  color: #00cc66;
+}
+
+.brutal-box-green:hover {
+  background-color: #00cc66;
+}
+
+.brutal-box-green:hover * {
+  color: white !important;
+}
+
+/* Skill bars */
+.skill-bar {
+  width: 100%;
+  height: 12px;
+  background-color: white;
+  border: 2px solid currentColor;
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background-color: currentColor;
+  transition: width 1s ease-in-out;
+}
+
+.skill-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+/* Experience styles */
+.experience-line {
+  position: relative;
+}
+
+.experience-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2rem;
+  bottom: -2rem;
+  width: 2px;
+  background-color: currentColor;
+}
+
+.experience-dot {
+  position: absolute;
+  left: -4px;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  background-color: currentColor;
+  border: 2px solid white;
+}
+
+.experience-dot::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 2px solid currentColor;
+  background-color: white;
+}
+
+/* Header styles */
+.brutal-logo {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border: 3px solid black;
+  transition: all 0.3s ease;
+}
+
+.brutal-logo:hover {
+  background: black;
+  color: white;
+  transform: translate(-2px, -2px);
+}
+
+/* Burger Menu */
+.burger-menu {
+  width: 32px;
+  height: 24px;
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.burger-line {
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+.burger-line:nth-child(1) {
+  top: 0;
+}
+
+.burger-line:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.burger-line:nth-child(3) {
+  bottom: 0;
+}
+
+/* Burger Menu Open State */
+.burger-line.open:nth-child(1) {
+  transform: rotate(45deg);
+  top: 50%;
+}
+
+.burger-line.open:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-line.open:nth-child(3) {
+  transform: rotate(-45deg);
+  bottom: 40%;
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  margin-bottom: 1.5rem;
+}
+
+.brutal-title {
+  font-size: 5rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.brutal-heading {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+}
+
+/* List styles */
+.brutal-list {
+  list-style: none;
+  padding: 0;
+}
+
+.brutal-list li {
+  font-size: 1.25rem;
+  padding: 0.75rem 0;
+  transition: all 0.3s ease;
+}
+
+/* Project styles */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.project-card p {
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+}
+
+.project-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Button styles */
+.brutal-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  border: 2px solid currentColor;
+  background: transparent;
+}
+
+.brutal-btn:hover {
+  background-color: currentColor;
+  color: white;
+}
+
+/* Custom selection color */
+::selection {
+  background: black;
+  color: white;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+  border: 2px solid black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: black;
+  border: 2px solid white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+/* Container */
+.brutal-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }

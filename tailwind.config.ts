@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,10 +9,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        'concrete': '#CBD5E1',
+        'steel': '#475569',
+        'raw': '#1E293B',
+        'accent': '#F1F5F9',
+        'dark': '#0F172A',
+      },
+      animation: {
+        'flicker': 'flicker 2s linear infinite',
+      },
+      keyframes: {
+        flicker: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+        },
+      },
+      cursor: {
+        'crosshair': 'crosshair',
       },
     },
   },
   plugins: [],
-} satisfies Config;
+}
+
+export default config;

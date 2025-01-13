@@ -55,7 +55,7 @@ export default function Hero() {
         <div className="space-y-8">
           <div className="space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold">
-              Hi, I&apos;m Denny Danuwijaya 👋
+              Hi, I&apos;m Denny Danuwijaya👋
             </h1>
             <h2 className="text-2xl md:text-3xl opacity-80">
               Full Stack Developer & GIS Specialist

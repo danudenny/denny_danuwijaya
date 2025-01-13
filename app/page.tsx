@@ -7,6 +7,7 @@ import Experience from './components/Experience'
 import Projects from './components/Projects'
 import Blog from './components/Blog'
 import Contact from './components/Contact'
+import Explorer from './components/Explorer'
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div id="home"><Hero /></div>
           <div id="skills"><Skills /></div>
+          <div id="explorer"><Explorer /></div>
           <div id="experience"><Experience /></div>
           <div id="projects"><Projects /></div>
           <div id="blog"><Blog /></div>

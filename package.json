@@ -11,10 +11,12 @@
   "dependencies": {
     "@next/font": "^14.2.15",
     "framer-motion": "^11.17.0",
+    "mapbox-gl": "^3.9.2",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-icons": "^5.4.0"
+    "react-icons": "^5.4.0",
+    "react-map-gl": "^7.1.8"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -14,7 +14,6 @@ import {
   SiPostgresql,
   SiDocker 
 } from 'react-icons/si';
-import { IoTerminal } from 'react-icons/io5';
 import TerminalPopup from './TerminalPopup';
 
 const socialLinks = [
@@ -100,7 +99,7 @@ export default function Hero() {
             ))}
           </motion.div>
 
-          {/* Social Links and Terminal Button */}
+          {/* Social Links */}
           <motion.div 
             className="flex gap-6 items-center"
             initial={{ opacity: 0 }}
@@ -118,49 +117,6 @@ export default function Hero() {
                 <link.icon />
               </a>
             ))}
-            
-            {/* Terminal Button */}
-            <motion.button
-              onClick={() => setIsTerminalOpen(true)}
-              className="brutal-btn brutal-btn-black flex items-center gap-2 px-4 py-2 text-sm relative group overflow-hidden"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 500,
-                damping: 30
-              }}
-            >
-              <motion.div
-                className="absolute inset-0 bg-green-500 opacity-0 group-hover:opacity-10 
-                transition-opacity duration-300"
-              />
-              <motion.div
-                initial={{ y: 0 }}
-                whileHover={{ 
-                  y: [-2, 2, -2],
-                  transition: {
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }
-                }}
-                className="relative z-10"
-              >
-                <IoTerminal className="w-5 h-5 group-hover:text-green-400 transition-colors duration-300" />
-              </motion.div>
-              <span className="relative z-10 group-hover:text-green-400 transition-colors duration-300">
-                Open Terminal
-              </span>
-              <motion.div
-                className="absolute bottom-0 left-0 h-1 bg-green-500"
-                initial={{ width: 0 }}
-                whileHover={{ width: "100%" }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
           </motion.div>
         </div>
       </div>

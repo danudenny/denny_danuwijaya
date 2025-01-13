@@ -32,6 +32,7 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         <br />• contact - Contact information
         <br />• links - Social media & useful links
         <br />• trivia - Play a fun trivia game
+        <br />• ask [question] - Ask AI about my experience
         <br />• clear - Clear the terminal
         <br />• exit - Close the terminal
         <br />
@@ -41,6 +42,7 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         <br />• Type 'experience [company]' for specific role details
         <br />• Type 'projects [category]' to filter by category
         <br />• Type 'trivia start' to begin the game
+        <br />• Type 'ask [your question]' to chat with AI
       </div>
     ),
     about: () => (
@@ -50,74 +52,200 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         and exploring new technologies.
       </div>
     ),
-    skills: () => (
-      <div className="text-yellow-400">
-        Technical Skills:
-        <br />• Frontend: TypeScript, React, Vue.js, Angular
-        <br />• Backend: Python, Laravel, Node.js
-        <br />• Database: PostgreSQL
-        <br />• DevOps: Docker
-        <br />• Specialties: GIS, Mapping Solutions
-      </div>
-    ),
-    projects: (args?: string) => {
-      const projects = [
-        {
-          title: 'Official Travel Information System',
-          description: 'Comprehensive travel management system for Wijaya Karya Industri dan Konstruksi with real-time updates.',
-          tech: ['Angular 12', 'PostgreSQL', 'Node.js WebSocket', 'Laravel 9'],
-          category: 'Enterprise System',
-        },
-        {
-          title: 'BKSDA Palembang Monitoring System',
-          description: 'A comprehensive monitoring system for Natural Resources Conservation Agency.',
-          tech: ['Angular 5', 'Node.js', 'Express', 'PostgreSQL', 'GeoServer', 'LeafletJS'],
-          category: 'GIS Application',
-        },
-        {
-          title: 'Environmental Impact Analysis System',
-          description: 'Advanced system for the Ministry of Environment and Forestry to analyze environmental impacts.',
-          tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'ArcGIS Server', 'ArcGIS JS API'],
-          category: 'Government System',
-        },
-        {
-          title: 'Spatial Planning Information System',
-          description: 'Comprehensive spatial planning system implemented for multiple regencies including Banyuasin and Belitung.',
-          tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'Python', 'OpenLayers'],
-          category: 'GIS Application',
-        },
-        {
-          title: 'KKPR Information System',
-          description: 'Land Use Permit system for Banyuasin Regency with advanced spatial features.',
-          tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'Python', 'OpenLayers'],
-          category: 'Government System',
-        },
-        {
-          title: 'HRIS for PT Pesonna Optima Jasa',
-          description: 'Complete Human Resource Information System with modern features.',
-          tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'Python', 'Minio'],
-          category: 'Enterprise System',
-        },
-        {
-          title: 'Heartful Tower Apartment Website',
-          description: 'Modern and responsive website for luxury apartment complex.',
-          tech: ['Next.js', 'React', 'Tailwind CSS'],
-          category: 'Web Development',
-        },
-        {
-          title: 'Galaksi Mineral Indonesia',
-          description: 'Corporate website with modern design and optimal performance.',
-          tech: ['Next.js', 'React', 'Tailwind CSS'],
-          category: 'Web Development',
+    skills: (category?: string) => {
+      if (category) {
+        if (category.toLowerCase().startsWith('search ')) {
+          const query = category.slice(7);
+          return searchSkills(query);
         }
-      ];
+        const skills = {
+          frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Material-UI'],
+          backend: ['Node.js', 'Express', 'PostgreSQL', 'Python', 'FastAPI'],
+          gis: ['PostGIS', 'QGIS', 'GeoServer', 'Leaflet', 'Mapbox', 'OpenLayers'],
+          database: ['PostgreSQL', 'PostGIS', 'MongoDB', 'Redis'],
+          cloud: ['AWS', 'Google Cloud', 'Docker', 'Kubernetes']
+        };
 
-      const categories = [...new Set(projects.map(p => p.category))];
+        const matchedSkills = skills[category.toLowerCase()];
+        if (!matchedSkills) {
+          return (
+            <div className="text-yellow-400">
+              No skills found matching '{category}'. Try:
+              <br />• Frontend skills: react, typescript, nextjs
+              <br />• Backend skills: python, node, postgres
+              <br />• GIS skills: postgis, qgis, geoserver
+            </div>
+          );
+        }
 
-      if (!args || args.trim() === '') {
         return (
           <div className="text-yellow-400">
-            <div className="mb-2">Available Categories:</div>
+            <div className="font-bold">{category}</div>
+            {matchedSkills.map((skill, i) => (
+              <div key={i} className="ml-2">• {skill}</div>
+            ))}
+          </div>
+        );
+      }
+
+      return (
+        <div className="text-yellow-400">
+          Technical Skills:
+          <br />• Frontend: TypeScript, React, Vue.js, Angular
+          <br />• Backend: Python, Laravel, Node.js
+          <br />• Database: PostgreSQL
+          <br />• DevOps: Docker
+          <br />• Specialties: GIS, Mapping Solutions
+        </div>
+      );
+    },
+    projects: (category?: string) => {
+      if (category) {
+        if (category.toLowerCase().startsWith('search ')) {
+          const tech = category.slice(7);
+          return searchProjects(tech);
+        }
+        const projects = [
+          {
+            title: 'Official Travel Information System',
+            description: 'Comprehensive travel management system for Wijaya Karya Industri dan Konstruksi with real-time updates.',
+            tech: ['Angular 12', 'PostgreSQL', 'Node.js WebSocket', 'Laravel 9'],
+            category: 'Enterprise System',
+          },
+          {
+            title: 'BKSDA Palembang Monitoring System',
+            description: 'A comprehensive monitoring system for Natural Resources Conservation Agency.',
+            tech: ['Angular 5', 'Node.js', 'Express', 'PostgreSQL', 'GeoServer', 'LeafletJS'],
+            category: 'GIS Application',
+          },
+          {
+            title: 'Environmental Impact Analysis System',
+            description: 'Advanced system for the Ministry of Environment and Forestry to analyze environmental impacts.',
+            tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'ArcGIS Server', 'ArcGIS JS API'],
+            category: 'Government System',
+          },
+          {
+            title: 'Spatial Planning Information System',
+            description: 'Comprehensive spatial planning system implemented for multiple regencies including Banyuasin and Belitung.',
+            tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'Python', 'OpenLayers'],
+            category: 'GIS Application',
+          },
+          {
+            title: 'KKPR Information System',
+            description: 'Land Use Permit system for Banyuasin Regency with advanced spatial features.',
+            tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'Python', 'OpenLayers'],
+            category: 'Government System',
+          },
+          {
+            title: 'HRIS for PT Pesonna Optima Jasa',
+            description: 'Complete Human Resource Information System with modern features.',
+            tech: ['Vue', 'Laravel 10', 'PostgreSQL', 'Python', 'Minio'],
+            category: 'Enterprise System',
+          },
+          {
+            title: 'Heartful Tower Apartment Website',
+            description: 'Modern and responsive website for luxury apartment complex.',
+            tech: ['Next.js', 'React', 'Tailwind CSS'],
+            category: 'Web Development',
+          },
+          {
+            title: 'Galaksi Mineral Indonesia',
+            description: 'Corporate website with modern design and optimal performance.',
+            tech: ['Next.js', 'React', 'Tailwind CSS'],
+            category: 'Web Development',
+          }
+        ];
+
+        const categories = [...new Set(projects.map(p => p.category))];
+
+        if (!category || category.trim() === '') {
+          return (
+            <div className="text-yellow-400">
+              <div className="mb-2">Available Categories:</div>
+              {categories.map((category, i) => (
+                <div key={i} className="ml-2">• {category}</div>
+              ))}
+              <div className="mt-4 text-green-400/80">
+                Type 'projects list' to see all projects
+                <br />Type 'projects [category]' to filter by category
+                <br />Type 'projects info [project]' for project details
+              </div>
+            </div>
+          );
+        }
+
+        const [command, ...rest] = category.toLowerCase().trim().split(' ');
+        const searchTerm = rest.join(' ');
+
+        if (command === 'list') {
+          return (
+            <div className="text-yellow-400">
+              <div className="mb-2">All Projects:</div>
+              {projects.map((project, i) => (
+                <div key={i} className="mb-3">
+                  <div className="font-bold">{project.title}</div>
+                  <div className="text-green-400/80 text-sm">{project.category}</div>
+                  <div className="text-yellow-400/80 text-sm">{project.description}</div>
+                </div>
+              ))}
+            </div>
+          );
+        }
+
+        if (command === 'info') {
+          const project = projects.find(p => 
+            p.title.toLowerCase().includes(searchTerm) || 
+            searchTerm.split(' ').every(term => p.title.toLowerCase().includes(term))
+          );
+
+          if (project) {
+            return (
+              <div className="text-yellow-400">
+                <div className="font-bold text-lg">{project.title}</div>
+                <div className="text-green-400 mt-1">{project.category}</div>
+                <div className="mt-2">{project.description}</div>
+                <div className="mt-2">
+                  <span className="text-green-400">Technologies:</span>
+                  <div className="ml-2">
+                    {project.tech.map((t, i) => (
+                      <span key={i} className="inline-block mr-2 mb-1 px-2 py-0.5 text-xs bg-green-500/10 text-green-400 rounded">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          return `Project "${searchTerm}" not found. Type 'projects list' to see all projects.`;
+        }
+
+        // Filter by category
+        const searchTermLower = category.toLowerCase().trim();
+        const categoryProjects = projects.filter(p => 
+          p.category.toLowerCase().includes(searchTermLower)
+        );
+
+        if (categoryProjects.length > 0) {
+          return (
+            <div className="text-yellow-400">
+              <div className="mb-2">Projects in category containing "{category.trim()}":</div>
+              {categoryProjects.map((project, i) => (
+                <div key={i} className="mb-3">
+                  <div className="font-bold">{project.title}</div>
+                  <div className="text-green-400/80 text-sm">{project.category}</div>
+                  <div className="text-yellow-400/80 text-sm">{project.description}</div>
+                  <div className="text-green-400/70 text-xs">Type 'projects info {project.title.split(' ')[0]}' for details</div>
+                </div>
+              ))}
+            </div>
+          );
+        }
+
+        return (
+          <div className="text-yellow-400">
+            <div>Category "{category.trim()}" not found.</div>
+            <div className="mt-2">Available categories:</div>
             {categories.map((category, i) => (
               <div key={i} className="ml-2">• {category}</div>
             ))}
@@ -130,78 +258,9 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         );
       }
 
-      const [command, ...rest] = args.toLowerCase().trim().split(' ');
-      const searchTerm = rest.join(' ');
-
-      if (command === 'list') {
-        return (
-          <div className="text-yellow-400">
-            <div className="mb-2">All Projects:</div>
-            {projects.map((project, i) => (
-              <div key={i} className="mb-3">
-                <div className="font-bold">{project.title}</div>
-                <div className="text-green-400/80 text-sm">{project.category}</div>
-                <div className="text-yellow-400/80 text-sm">{project.description}</div>
-              </div>
-            ))}
-          </div>
-        );
-      }
-
-      if (command === 'info') {
-        const project = projects.find(p => 
-          p.title.toLowerCase().includes(searchTerm) || 
-          searchTerm.split(' ').every(term => p.title.toLowerCase().includes(term))
-        );
-
-        if (project) {
-          return (
-            <div className="text-yellow-400">
-              <div className="font-bold text-lg">{project.title}</div>
-              <div className="text-green-400 mt-1">{project.category}</div>
-              <div className="mt-2">{project.description}</div>
-              <div className="mt-2">
-                <span className="text-green-400">Technologies:</span>
-                <div className="ml-2">
-                  {project.tech.map((t, i) => (
-                    <span key={i} className="inline-block mr-2 mb-1 px-2 py-0.5 text-xs bg-green-500/10 text-green-400 rounded">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        }
-        return `Project "${searchTerm}" not found. Type 'projects list' to see all projects.`;
-      }
-
-      // Filter by category
-      const searchTermLower = args.toLowerCase().trim();
-      const categoryProjects = projects.filter(p => 
-        p.category.toLowerCase().includes(searchTermLower)
-      );
-
-      if (categoryProjects.length > 0) {
-        return (
-          <div className="text-yellow-400">
-            <div className="mb-2">Projects in category containing "{args.trim()}":</div>
-            {categoryProjects.map((project, i) => (
-              <div key={i} className="mb-3">
-                <div className="font-bold">{project.title}</div>
-                <div className="text-green-400/80 text-sm">{project.category}</div>
-                <div className="text-yellow-400/80 text-sm">{project.description}</div>
-                <div className="text-green-400/70 text-xs">Type 'projects info {project.title.split(' ')[0]}' for details</div>
-              </div>
-            ))}
-          </div>
-        );
-      }
-
       return (
         <div className="text-yellow-400">
-          <div>Category "{args.trim()}" not found.</div>
-          <div className="mt-2">Available categories:</div>
+          <div className="mb-2">Available Categories:</div>
           {categories.map((category, i) => (
             <div key={i} className="ml-2">• {category}</div>
           ))}
@@ -348,6 +407,125 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         </div>
       );
     },
+    ask: async (question?: string) => {
+      if (!question) {
+        return (
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>Powered by</span>
+                <span className="font-semibold">Google Gemini</span>
+                <span className="ml-1">🧠</span>
+              </div>
+              <div className="text-red-400/70 text-xs animate-pulse">
+                💸 Ka-ching! AI tokens aren't free!
+              </div>
+            </div>
+            <div className="text-yellow-400/70 text-sm mb-3 italic">
+              "I'm running on a tight AI budget here - let's keep our chats focused and wallet-friendly! 😅"
+            </div>
+            <div className="space-y-3">
+              <div className="text-green-400/90">Try these cost-effective questions:</div>
+              <div className="space-y-1">
+                <div className="text-cyan-400 flex items-center gap-2">
+                  <span>→</span>
+                  ask What are your GIS skills?
+                </div>
+                <div className="text-cyan-400 flex items-center gap-2">
+                  <span>→</span>
+                  ask Tell me about your latest project
+                </div>
+                <div className="text-cyan-400 flex items-center gap-2">
+                  <span>→</span>
+                  ask What technologies do you use?
+                </div>
+              </div>
+              <div className="text-yellow-400/50 text-sm mt-2 italic">
+                P.S. Each AI token costs more than my morning coffee! ☕
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      try {
+        const response = await fetch('/api/ai', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            message: question,
+            context: `The user asked: ${question}. Remember to keep responses concise - AI tokens aren't cheap! 😅`
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to get AI response');
+        }
+        
+        return (
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>Powered by</span>
+                <span className="font-semibold">Google Gemini</span>
+                <span className="ml-1">🧠</span>
+              </div>
+              <div className="text-yellow-400/50 text-xs">
+                💸 Spending those precious AI tokens...
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-yellow-400/50 mt-1">→</span>
+              <div>
+                <div className="text-cyan-400 font-medium">You asked:</div>
+                <div className="text-cyan-400/90">{question}</div>
+              </div>
+            </div>
+            <div className="mt-3 text-green-400 whitespace-pre-wrap pl-6">{data.response}</div>
+            <div className="mt-4 flex items-center gap-3 text-xs">
+              <div className="text-cyan-400/50">Ask another question!</div>
+              <div className="text-yellow-400/30">•</div>
+              <div className="text-red-400/70 animate-pulse">
+                💸 -$0.0001 from my coffee fund
+              </div>
+            </div>
+          </div>
+        );
+      } catch (error: any) {
+        console.error('Terminal AI Error:', error);
+        return (
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>AI Error</span>
+                <span className="ml-1">⚠️</span>
+              </div>
+            </div>
+            <div className="text-red-400">
+              Oops! The AI seems to be on a coffee break (or I ran out of tokens 😅)
+              {error.message && (
+                <div className="text-red-400/80 text-sm mt-1">
+                  Error: {error.message}
+                </div>
+              )}
+            </div>
+            <div className="mt-3 text-yellow-400/80">
+              While I refill my AI token jar, try these free commands:
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-1 text-sm">
+              <div className="text-cyan-400/70">• Type 'help'</div>
+              <div className="text-cyan-400/70">• Type 'experience'</div>
+              <div className="text-cyan-400/70">• Type 'projects'</div>
+              <div className="text-cyan-400/70">• Type 'skills'</div>
+            </div>
+          </div>
+        );
+      }
+    },
     clear: () => {
       // Clear command history and current input
       setCommands([]);
@@ -393,7 +571,7 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
     const commandFn = availableCommands[command as keyof typeof availableCommands];
     
     if (commandFn) {
-      if (command === 'experience' || command === 'projects' || command === 'trivia') {
+      if (command === 'experience' || command === 'projects' || command === 'trivia' || command === 'ask') {
         return commandFn(args.join(' '));
       }
       return commandFn();
@@ -462,16 +640,164 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
     }
   };
 
+  const welcomeMessage = (
+    <div>
+      <div className="text-green-400 font-bold text-lg">
+        👋 Welcome to Denny's Interactive Portfolio Terminal!
+      </div>
+      <div className="mt-2 text-cyan-400">
+        This is an interactive terminal where you can explore my experience, projects, and skills.
+        You can also chat with AI to learn more about my work!
+      </div>
+      <div className="mt-4">
+        <span className="text-yellow-400">🚀 Quick Start:</span>
+        <br />• Type <span className="text-cyan-400">'help'</span> to see all available commands
+        <br />• Use <span className="text-cyan-400">Tab</span> for autocomplete
+        <br />• Press <span className="text-cyan-400">↑↓</span> for command history
+        <br />• Type <span className="text-cyan-400">'clear'</span> to reset the terminal
+      </div>
+      <div className="mt-4">
+        <span className="text-yellow-400">💼 Portfolio Navigation:</span>
+        <br />• <span className="text-cyan-400">projects web</span> - View web development projects
+        <br />• <span className="text-cyan-400">projects gis</span> - Explore GIS projects
+        <br />• <span className="text-cyan-400">experience koltiva</span> - My work at Koltiva
+        <br />• <span className="text-cyan-400">skills frontend</span> - Frontend skills
+        <br />• <span className="text-cyan-400">skills backend</span> - Backend expertise
+        <br />• <span className="text-cyan-400">skills gis</span> - GIS capabilities
+      </div>
+      <div className="mt-4">
+        <span className="text-yellow-400">🤖 AI Assistant:</span>
+        <div className="flex items-center gap-2 text-xs mb-2">
+          <div className="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <span>Powered by</span>
+            <span className="font-semibold">Google Gemini</span>
+            <span className="ml-1">🧠</span>
+          </div>
+          <div className="text-yellow-400/70">•</div>
+          <div className="text-red-400/70 animate-pulse">$0.0001 per token 💸</div>
+        </div>
+        <div className="text-yellow-400/70 text-xs mb-3 italic">
+          "Please use the AI wisely - I'm not rich enough to handle too many deep philosophical questions! 😅"
+        </div>
+        <div className="space-y-2 text-sm">
+          <div>Try these wallet-friendly questions:</div>
+          <div className="text-cyan-400">• ask What GIS tools do you use?</div>
+          <div className="text-cyan-400">• ask Tell me about your projects</div>
+          <div className="text-cyan-400">• ask What's your tech stack?</div>
+        </div>
+        <div className="mt-4 flex items-center gap-2 text-xs text-yellow-400/50">
+          <span>💡</span>
+          <span>Fun fact: Each time you ask me about React vs Angular, a developer loses their coffee budget!</span>
+        </div>
+      </div>
+      <div className="mt-4">
+        <span className="text-yellow-400">🎮 Interactive Features:</span>
+        <br />• <span className="text-cyan-400">trivia start</span> - Play GIS & Web Dev trivia
+        <br />• <span className="text-cyan-400">links</span> - Social media & portfolio links
+        <br />• <span className="text-cyan-400">contact</span> - Get in touch
+      </div>
+      <div className="mt-4">
+        <span className="text-yellow-400">🎯 Quick Commands:</span>
+        <br />• Type <span className="text-cyan-400">about</span> for a quick intro
+        <br />• Use <span className="text-cyan-400">skills search [keyword]</span> to find specific skills
+        <br />• Try <span className="text-cyan-400">projects search [tech]</span> to filter projects
+      </div>
+      <div className="mt-4 text-green-400">
+        Let's get started! Try a command or ask the AI assistant something! 🚀
+      </div>
+    </div>
+  );
+
+  // Function to handle skill search
+  const searchSkills = (query: string) => {
+    const skills = {
+      frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Material-UI'],
+      backend: ['Node.js', 'Express', 'PostgreSQL', 'Python', 'FastAPI'],
+      gis: ['PostGIS', 'QGIS', 'GeoServer', 'Leaflet', 'Mapbox', 'OpenLayers'],
+      database: ['PostgreSQL', 'PostGIS', 'MongoDB', 'Redis'],
+      cloud: ['AWS', 'Google Cloud', 'Docker', 'Kubernetes']
+    };
+
+    const allSkills = Object.values(skills).flat();
+    const matchedSkills = allSkills.filter(skill => 
+      skill.toLowerCase().includes(query.toLowerCase())
+    );
+
+    if (matchedSkills.length === 0) {
+      return (
+        <div className="text-yellow-400">
+          No skills found matching '{query}'. Try:
+          <br />• Frontend skills: react, typescript, nextjs
+          <br />• Backend skills: python, node, postgres
+          <br />• GIS skills: postgis, qgis, geoserver
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className="text-cyan-400">Found {matchedSkills.length} matching skills:</div>
+        {matchedSkills.map((skill, index) => (
+          <div key={index} className="text-green-400">• {skill}</div>
+        ))}
+        <div className="text-yellow-400/70 mt-2">
+          Type 'ask' to learn more about any of these skills!
+        </div>
+      </div>
+    );
+  };
+
+  // Function to handle project search
+  const searchProjects = (tech: string) => {
+    const projects = {
+      web: [
+        { name: 'Portfolio Terminal', tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'AI'] },
+        { name: 'GIS Dashboard', tech: ['React', 'PostGIS', 'Mapbox', 'TypeScript'] }
+      ],
+      gis: [
+        { name: 'Spatial Analysis Tool', tech: ['Python', 'PostGIS', 'GeoServer'] },
+        { name: 'Interactive Map Viewer', tech: ['Leaflet', 'TypeScript', 'GeoJSON'] }
+      ]
+    };
+
+    const allProjects = Object.values(projects).flat();
+    const matchedProjects = allProjects.filter(project => 
+      project.tech.some(t => t.toLowerCase().includes(tech.toLowerCase()))
+    );
+
+    if (matchedProjects.length === 0) {
+      return (
+        <div className="text-yellow-400">
+          No projects found with '{tech}'. Try searching for:
+          <br />• Web: react, nextjs, typescript
+          <br />• GIS: postgis, python, leaflet
+          <br />• Or type 'projects' to see all projects
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className="text-cyan-400">Found {matchedProjects.length} projects:</div>
+        {matchedProjects.map((project, index) => (
+          <div key={index} className="mb-2">
+            <div className="text-green-400 font-bold">{project.name}</div>
+            <div className="text-yellow-400/70">Technologies: {project.tech.join(', ')}</div>
+          </div>
+        ))}
+        <div className="text-cyan-400/70 mt-2">
+          Type 'ask tell me about [project]' to learn more!
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setCommands([{
         command: '',
-        output: (
-          <div className="text-green-400">
-            Welcome to my interactive terminal! Type 'help' to see available commands.
-          </div>
-        ),
+        output: welcomeMessage,
       }]);
       // Focus input when terminal opens
       setTimeout(() => {

@@ -1,5 +1,6 @@
 import './globals.css'
 import { Space_Grotesk } from 'next/font/google'
+import FloatingTerminal from './components/FloatingTerminal';
 
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ['latin'],
@@ -19,7 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={spaceGrotesk.variable}>
-      <body className={spaceGrotesk.className}>{children}</body>
+      <body className={spaceGrotesk.className}>
+        {children}
+        <FloatingTerminal />
+      </body>
     </html>
   )
 }

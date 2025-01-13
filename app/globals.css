@@ -327,3 +327,41 @@ h1, h2, h3 {
 .animate-textScanline {
   animation: textScanline 4s ease-in-out infinite;
 }
+
+/* Vertical Text Animation */
+.vertical-text {
+  transform-origin: center;
+  animation: fadeSlide 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pulse Animation */
+@keyframes terminal-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+}
+
+.terminal-pulse {
+  animation: terminal-pulse 2s ease-in-out infinite;
+}

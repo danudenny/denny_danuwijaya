@@ -58,15 +58,18 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
           const query = category.slice(7);
           return searchSkills(query);
         }
-        const skills = {
-          frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Material-UI'],
-          backend: ['Node.js', 'Express', 'PostgreSQL', 'Python', 'FastAPI'],
-          gis: ['PostGIS', 'QGIS', 'GeoServer', 'Leaflet', 'Mapbox', 'OpenLayers'],
-          database: ['PostgreSQL', 'PostGIS', 'MongoDB', 'Redis'],
-          cloud: ['AWS', 'Google Cloud', 'Docker', 'Kubernetes']
+        type SkillCategory = 'frontend' | 'backend' | 'gis' | 'database' | 'cloud';
+
+        const skills: Record<SkillCategory, string[]> = {
+            frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Material-UI'],
+            backend: ['Node.js', 'Express', 'PostgreSQL', 'Python', 'FastAPI'],
+            gis: ['PostGIS', 'QGIS', 'GeoServer', 'Leaflet', 'Mapbox', 'OpenLayers'],
+            database: ['PostgreSQL', 'PostGIS', 'MongoDB', 'Redis'],
+            cloud: ['AWS', 'Google Cloud', 'Docker', 'Kubernetes']
         };
 
-        const matchedSkills = skills[category.toLowerCase()];
+        const lowercaseCategory = category.toLowerCase() as SkillCategory;
+        const matchedSkills = skills[lowercaseCategory];
         if (!matchedSkills) {
           return (
             <div className="text-yellow-400">
@@ -100,12 +103,7 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
       );
     },
     projects: (category?: string) => {
-      if (category) {
-        if (category.toLowerCase().startsWith('search ')) {
-          const tech = category.slice(7);
-          return searchProjects(tech);
-        }
-        const projects = [
+    const projects = [
           {
             title: 'Official Travel Information System',
             description: 'Comprehensive travel management system for Wijaya Karya Industri dan Konstruksi with real-time updates.',
@@ -155,8 +153,13 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             category: 'Web Development',
           }
         ];
-
         const categories = [...new Set(projects.map(p => p.category))];
+
+        if (category) {
+        if (category.toLowerCase().startsWith('search ')) {
+            const tech = category.slice(7);
+            return searchProjects(tech);
+        }
 
         if (!category || category.trim() === '') {
           return (
@@ -867,7 +870,7 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               {commands.map((cmd, index) => (
                 <div key={index} className="space-y-1 animate-textScanline">
                   <div className="flex items-center">
-                    <span className="text-green-500/90">C:\DENNY-DOS></span>
+                    <span className="text-green-500/90">C:\DENNY-DOS{'>'}</span>
                     <span className="ml-2 text-green-300">{cmd.command}</span>
                   </div>
                   <div className="ml-4 text-green-400/90 leading-relaxed [text-shadow:0_0_5px_rgba(0,255,0,0.5)]">
@@ -878,7 +881,7 @@ const TerminalPopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               
               <div className="flex flex-col space-y-2">
                 <div className="flex items-center animate-textScanline">
-                  <span className="text-green-500/90">C:\DENNY-DOS></span>
+                <span className="text-green-500/90">C:\DENNY-DOS{'>'}</span>
                   <input
                     type="text"
                     value={currentInput}
